@@ -39,6 +39,7 @@ namespace ClientServer_Winforms
                         stringBuilder.Append(Encoding.Unicode.GetString(buffer, 0, byteCount));
                     } while (clientSocket.Available > 0);
                     string rez = stringBuilder.ToString();
+
                     if (rez.Equals("text"))
                     {
                         Console.WriteLine("SERVER CATCH TEXT");
@@ -55,9 +56,9 @@ namespace ClientServer_Winforms
                         string filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}MESAGGES.txt";
                         File.AppendAllText(di.FullName + filename, rez2 + "\n");
                     }
-                    if (rez.Equals(".txt"))
+                    else 
                     {
-                        Console.WriteLine("SERVER CATCH FILE TXT");
+                        Console.WriteLine("SERVER CATCH FILE");
                         int byteCount2 = 0;
                         byte[] buffer2 = new byte[256];
                         StringBuilder sizeBuilder = new StringBuilder();
@@ -68,39 +69,6 @@ namespace ClientServer_Winforms
 
                         } while (clientSocket.Available > 0);
 
-                        long size = Convert.ToUInt32(sizeBuilder.ToString());
-
-                        int byteCount3 = 0;
-                        byte[] buffer3 = new byte[size];
-                        do
-                        {
-                            byteCount3 = clientSocket.Receive(buffer3);
-
-                        } while (clientSocket.Available > 0)
-                        ;
-                        string filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}copyTXT.txt";
-                        if (File.Exists(di.FullName + filename))
-                        {
-                            filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}copyTXT{id}.txt";
-                            File.WriteAllBytes(di.FullName + filename, buffer3);
-                            id++;
-                        }
-                        else
-
-                        { File.WriteAllBytes(di.FullName + filename, buffer3); }
-                    }
-                    if (rez.Equals(".png"))
-                    {
-                        Console.WriteLine("SERVER CATCH FILE PNG");
-                        int byteCount2 = 0;
-                        byte[] buffer2 = new byte[256];
-                        StringBuilder sizeBuilder = new StringBuilder();
-                        do
-                        {
-                            byteCount2 = clientSocket.Receive(buffer2);
-                            sizeBuilder.Append(Encoding.Unicode.GetString(buffer2, 0, byteCount2));
-
-                        } while (clientSocket.Available > 0);
                         long size = Convert.ToUInt32(sizeBuilder.ToString());
 
                         int byteCount3 = 0;
@@ -110,54 +78,19 @@ namespace ClientServer_Winforms
                         {
                             byteCount3 = clientSocket.Receive(buffer3);
 
-                        } while (clientSocket.Available > 0);
-                        string filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}CopyPNG.png";
+                        } while (clientSocket.Available > 0)
+                        ;
+                        string filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}copy{rez}";
                         if (File.Exists(di.FullName + filename))
                         {
-                            filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}CopyPNG{id}.png";
+                            filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}copy{id}{rez}";
                             File.WriteAllBytes(di.FullName + filename, buffer3);
                             id++;
                         }
                         else
 
                         { File.WriteAllBytes(di.FullName + filename, buffer3); }
-
-                    }
-                    if (rez.Equals(".jpg"))
-                    {
-                        Console.WriteLine("SERVER CATCH FILE JPG");
-                        int byteCount2 = 0;
-                        byte[] buffer2 = new byte[256];
-                        StringBuilder sizeBuilder = new StringBuilder();
-                        do
-                        {
-                            byteCount2 = clientSocket.Receive(buffer2);
-                            sizeBuilder.Append(Encoding.Unicode.GetString(buffer2, 0, byteCount2));
-
-                        } while (clientSocket.Available > 0);
-                        long size = Convert.ToUInt32(sizeBuilder.ToString());
-
-                        int byteCount3 = 0;
-                        byte[] buffer3 = new byte[size];
-
-                        do
-                        {
-                            byteCount3 = clientSocket.Receive(buffer3);
-
-                        } while (clientSocket.Available > 0);
-
-                        string filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}CopyJPG.jpg";
-                        if (File.Exists(di.FullName + filename))
-                        {
-                             filename = $"\\{DateTime.Now.ToShortDateString()}{iPEnd.Address.ToString()}CopyJPG{id}.jpg";
-                            File.WriteAllBytes(di.FullName + filename, buffer3);
-                            id++;
-                        }
-                        else
-
-                        { File.WriteAllBytes(di.FullName + filename, buffer3); }
-
-                    }
+                    }             
 
                 }
                 clientSocket.Shutdown(SocketShutdown.Both);

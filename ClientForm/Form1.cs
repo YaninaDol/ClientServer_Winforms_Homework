@@ -39,8 +39,7 @@ namespace ClientForm
         private void Form1_Closing(object sender, CancelEventArgs e)
         {
 
-            MessageBox.Show("Are you shure?");
-          
+            MessageBox.Show("Are you shure?");      
 
         }
 
@@ -76,8 +75,7 @@ namespace ClientForm
                     this.label1.Text = dialog.FileName;
 
                 }
-            }
-         
+            }   
            
         }
 
@@ -88,10 +86,8 @@ namespace ClientForm
             string type = str.Substring(str.LastIndexOf('.'));
             if (socket.Connected)
             {
-                if (type.Equals(".txt"))
-                {
-                    string filetype = ".txt";
-
+               
+                    string filetype = type;
                     byte[] datafiletype = Encoding.Unicode.GetBytes(filetype);
                     socket.Send(datafiletype);
                     string filepath = this.label1.Text;
@@ -103,44 +99,7 @@ namespace ClientForm
 
                     byte[] datafile = File.ReadAllBytes(filepath);
                     socket.Send(datafile);
-                }
-                if (type.Equals(".png"))
-                {
-                    string filetype = ".png";
-                    byte[] datafiletype = Encoding.Unicode.GetBytes(filetype);
-                    socket.Send(datafiletype);
-
-                    string filepath = this.label1.Text;
-
-                    FileInfo file = new FileInfo(filepath);
-                    string size = Convert.ToString(file.Length);
-                    byte[] datasize = Encoding.Unicode.GetBytes(size);
-                    socket.Send(datasize);
-                    
-
-
-                    byte[] datafile = File.ReadAllBytes(filepath);
-                    socket.Send(datafile);
-                }
-                if (type.Equals(".jpg"))
-                {
-                    string filetype = ".jpg";
-                    byte[] datafiletype = Encoding.Unicode.GetBytes(filetype);
-                    socket.Send(datafiletype);
-
-                    string filepath = this.label1.Text;
-
-                    FileInfo file = new FileInfo(filepath);
-                    string size = Convert.ToString(file.Length);
-                    byte[] datasize = Encoding.Unicode.GetBytes(size);
-                    socket.Send(datasize);
-
-
-
-                    byte[] datafile = File.ReadAllBytes(filepath);
-                    socket.Send(datafile);
-                }
-
+                
 
             }
             else
